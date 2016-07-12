@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,27 +30,49 @@ namespace TablettiTesti.Utils
         public void Init(FilterInfo captureDevice)
         {
             CaptureDevice = new VideoCaptureDevice(captureDevice.MonikerString);
-            CaptureDevice.NewFrame += CaptureDevice_NewFrame;
+            var capabs = CaptureDevice.VideoCapabilities;
+            CaptureDevice.SnapshotFrame += CaptureDevice_SnapshotFrame;
+            CaptureDevice.VideoResolution = capabs[2];
+           // CaptureDevice.NewFrame += CaptureDevice_NewFrame;
         }
+
+        void CaptureDevice_SnapshotFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
+        {
+            if (IncomingImage != null)
+                IncomingImage.Invoke(eventArgs.Frame.Clone(), EventArgs.Empty);
+
+            if (second != null)
+                third = (Bitmap)second.Clone();
+            if (first != null)
+                second = (Bitmap)first.Clone();
+            first = (Bitmap)eventArgs.Frame.Clone();
+
+            if (first == null || second == null || third == null)
+                return;
+
+            if (ImageComparer(first, second))
+            {
+                if (ImageComparer(first, third))
+                {
+                    //ScreenHandler.SetMonitorState(ScreenHandler.MonitorState.OFF)
+
+                }
+            }
+        }
+
+        public async void StartCapture()
+        {
+            while(true)
+            {
+                CaptureDevice.SimulateTrigger();
+                Task.Delay(500);
+            }
+        }
+
 
         private async void CaptureDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
-            third = second;
-            second = first;
-            first = eventArgs.Frame;
-
-            // Compare images
-            if(ImageComparer(first, second))
-            {
-                if(ImageComparer(first, third))
-                {
-                    ScreenHandler.SetMonitorState(ScreenHandler.MonitorState.OFF);
-                }
-            }
-
-            CaptureDevice.Stop();
-            await Task.Delay(500);
-            CaptureDevice.Start();
+            
         }
 
         public void Start()
@@ -60,22 +83,24 @@ namespace TablettiTesti.Utils
         private bool ImageComparer(Bitmap first, Bitmap second)
         {
             long pixelCounter = 0;
-            for (int i = 0; i < first.Height; i++)
+            for (int i = 0; i < first.Height; i+=10)
             {
-                for (int j = 0; j < first.Width; j++)
+                for (int j = 0; j < first.Width; j+=10)
                 {
                     int diff = 0;
-                    diff += Math.Abs(first.GetPixel(i, j).R - second.GetPixel(i, j).R);
-                    diff += Math.Abs(first.GetPixel(i, j).G - second.GetPixel(i, j).G);
-                    diff += Math.Abs(first.GetPixel(i, j).B - second.GetPixel(i, j).B);
+                    diff += Math.Abs(first.GetPixel(j, i).R - second.GetPixel(j,i).R);
+                    diff += Math.Abs(first.GetPixel(j, i).G - second.GetPixel(j,i).G);
+                    diff += Math.Abs(first.GetPixel(j, i).B - second.GetPixel(j,i).B);
                     pixelCounter += diff;
                 }
             }
             if (ImageValue != null)
                 ImageValue.Invoke(pixelCounter, EventArgs.Empty);
-
+            float asd = pixelCounter / (first.Height * first.Width / 100);
+            Console.WriteLine(asd);
             if (pixelCounter / (first.Height * first.Width / 100) > 0.01)
             {
+                Console.WriteLine("MOVEMENT!");
                 return true;
             }
             return false;

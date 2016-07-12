@@ -32,20 +32,17 @@ namespace TablettiTesti
             MotionDetector detector = new MotionDetector();
             var devs = detector.GetVideoDevices();
             label.Content = devs.Count.ToString();
+            detector.IncomingImage += detector_IncomingImage;
             detector.Init(devs[0]);
-            detector.ImageValue += Detector_ImageValue;
-            detector.IncomingImage += Detector_IncomingImage;
-            detector.Start();
+           // detector.Start();
+            detector.StartCapture();
         }
 
-        private void Detector_IncomingImage(object sender, EventArgs e)
+        void detector_IncomingImage(object sender, EventArgs e)
         {
-            image.Source = MotionDetector.CreateBitmapSourceFromGdiBitmap((Bitmap)sender);
-        }
-
-        private void Detector_ImageValue(object sender, EventArgs e)
-        {
-            label.Content = (int)sender;
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            { this.image.Source = MotionDetector.CreateBitmapSourceFromGdiBitmap((Bitmap)sender); }));
+            
         }
     }
 }
