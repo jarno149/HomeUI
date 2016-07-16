@@ -1,0 +1,11 @@
+TABLET SETTINGS!!
+
+// Connected Standby
+HKLM\System\CurrentControlSet\Control\Power\CsEnabled (1->0)
+
+// Lockscreen off
+HKLM/Software/Policies/Microsoft/Windows
+    1. Create new registryKey: "Personalization"
+    2. Create new DWORD 32bit 
+        1. Name: NoLockScreen
+        2. Value: 1

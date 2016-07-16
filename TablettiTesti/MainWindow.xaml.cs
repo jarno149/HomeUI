@@ -27,41 +27,51 @@ namespace TablettiTesti
     {
         private List<FilterInfo> CaptureDevices = new List<FilterInfo>();
         private FilterInfo SelectedDevice;
+        private VideoCapabilities[] CaptureModes;
+        private VideoCapabilities SelectedCaptureMode;
+
         public MainWindow()
         {
             InitializeComponent();
 
             detector = new MotionDetector();
+            detector.IncomingImage += detector_IncomingImage;
             var devs = detector.GetVideoDevices();
             foreach (FilterInfo dev in devs)
             {
                 CaptureDevices.Add(dev);
             }
             CameraCb.ItemsSource = CaptureDevices;
+            CameraCb.SelectionChanged += CameraCb_SelectionChanged;
+            CaptureModeCb.SelectionChanged += CaptureModeCb_SelectionChanged;
+        }
+
+        void CaptureModeCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedCaptureMode = CaptureModes[CaptureModeCb.SelectedIndex];
+        }
+
+        void CameraCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CameraCb.SelectedItem != null)
+            {
+                SelectedDevice = (FilterInfo)CameraCb.SelectedItem;
+                CaptureModes = detector.GetDevicesCaptureModes(SelectedDevice);
+                CaptureModeCb.Items.Clear();
+                foreach (VideoCapabilities cab in CaptureModes)
+                {
+                    CaptureModeCb.Items.Add(cab.FrameSize.Width + "x" + cab.FrameSize.Height + " - " + cab.FrameRate + "fps");
+                }
+            }
+                
         }
 
         private MotionDetector detector;
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            detector = new MotionDetector();
-            var devs = detector.GetVideoDevices();
-            label.Content = devs.Count.ToString();
-            detector.IncomingImage += detector_IncomingImage;
-            detector.Init(devs[0]);
-            detector.Start();
-        }
-
-        void worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                ScreenHandler.SetMonitorState(ScreenHandler.MonitorState.OFF);
-                Thread.Sleep(4000);
-               // ScreenHandler.SetMonitorState(ScreenHandler.MonitorState.ON);
-                ScreenHandler.SetMonitorState(ScreenHandler.MonitorState.ON);
-                Thread.Sleep(4000);
-            }
+            detector.Previewing = true;
+            detector.Start(SelectedDevice, SelectedCaptureMode);
         }
 
         void detector_IncomingImage(object sender, EventArgs e)
@@ -69,11 +79,6 @@ namespace TablettiTesti
             Application.Current.Dispatcher.Invoke(new Action(() =>
             { this.image.Source = MotionDetector.CreateBitmapSourceFromGdiBitmap((Bitmap)sender); }));
             
-        }
-
-        private void kuva_Click(object sender, RoutedEventArgs e)
-        {
-            detector.CaptureStill();
         }
 
         private void Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -86,6 +91,12 @@ namespace TablettiTesti
         {
             if (detector != null)
                 detector.AddTimeout(5);
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (detector != null)
+                detector.Threshold = (int)Slider.Value;
         }
     }
 }

@@ -7,18 +7,19 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="422" Width="1121" PreviewMouseDown="Window_PreviewMouseDown" PreviewTouchDown="Window_PreviewTouchDown" WindowState="Maximized" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Label Content="Select camera:" FontSize="28" Margin="55,40,838,307" />
-        <ComboBox x:Name="CameraCb" FontSize="28" Margin="55,84,0,0" ItemsSource="{Binding CaptureDevices}" Height="75" VerticalAlignment="Top" HorizontalAlignment="Left" Width="411" DisplayMemberPath="Name" />
-        <Label Content="Select capturemode:" FontSize="28" Margin="394,40,575,673" />
-        <ComboBox x:Name="CaptureModeCb" FontSize="28" Margin="394,84,575,652" />
+        <Label Content="Select camera:" FontSize="28" Margin="55,40,0,0" HorizontalAlignment="Left" Width="220" Height="44" VerticalAlignment="Top" />
+        <ComboBox x:Name="CameraCb" FontSize="28" Margin="55,84,0,0" ItemsSource="{Binding CaptureDevices}" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Width="330" DisplayMemberPath="Name" />
+        <Label Content="Select capturemode:" FontSize="28" Margin="394,40,0,0" HorizontalAlignment="Left" Width="300" Height="44" VerticalAlignment="Top" />
+        <ComboBox x:Name="CaptureModeCb" FontSize="28" Margin="394,84,0,0" HorizontalAlignment="Left" Width="330" Height="40" VerticalAlignment="Top">
+        </ComboBox>
 
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="155,284,0,0" VerticalAlignment="Top" Width="120" Height="80" Click="button_Click" />
+        <Button x:Name="button" BorderThickness="2" Content="Button" HorizontalAlignment="Left" Margin="155,284,0,0" VerticalAlignment="Top" Width="120" Height="80" Click="button_Click" />
         <Label x:Name="label" Content="Label" HorizontalAlignment="Left" Margin="80,201,0,0" VerticalAlignment="Top"/>
 
-        <Image x:Name="image" HorizontalAlignment="Left" Height="347" Margin="763,50,0,0" VerticalAlignment="Top" Width="464"/>
+        <Image x:Name="image" Height="177" Margin="0,40,32,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="320"/>
+        <Slider x:Name="Slider" HorizontalAlignment="Left" Margin="582,253,0,0" VerticalAlignment="Top" Height="26" Width="278" Minimum="100" Maximum="500" ValueChanged="Slider_ValueChanged"/>
 
 
-        <Button x:Name="kuva" Content="ota kuva" HorizontalAlignment="Left" Margin="723,239,0,0" VerticalAlignment="Top" Width="120" Height="80" Click="kuva_Click" />
 
     </Grid>
 </Window>
