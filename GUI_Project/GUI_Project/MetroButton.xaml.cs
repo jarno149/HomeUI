@@ -9,7 +9,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -17,13 +16,16 @@ using System.Windows.Shapes;
 namespace GUI_Project
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MetroButton.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MetroButton : Button
     {
-        public MainWindow()
-        {
+        public int TextSize { get; set; } = 12;
+        public ImageSource ButtonIcon { get; set; }
 
+        public MetroButton()
+        {
+            InitializeComponent();
         }
     }
 }

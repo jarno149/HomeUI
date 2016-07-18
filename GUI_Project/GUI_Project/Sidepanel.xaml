@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="GUI_Project.Sidepanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GUI_Project"
+             mc:Ignorable="d" 
+             Background="Transparent" Width="300"
+             Height="500">
+    <Border x:Name="SidePanel" BorderBrush="Aqua" CornerRadius="0,15,15,0" Width="240" HorizontalAlignment="Left" Opacity="1">
+        <Border.Background>
+            <LinearGradientBrush EndPoint="1,0.95" StartPoint="0,0.3">
+                <GradientStop Color="#454545" Offset="0.16" />
+                <GradientStop Color="#696B69" Offset="0.22" />
+                <GradientStop Color="#2E2E2E" Offset="0.3" />
+                <GradientStop Color="#7E807E" Offset="1" />
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Border CornerRadius="0,15,15,0" Height="80" Margin="240,30,-60,0" VerticalAlignment="Top">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#454545" Offset="0.2" />
+                        <GradientStop Color="#696B69" Offset="0.4" />
+                        <GradientStop Color="#2E2E2E" Offset="0.8" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Image x:Name="ToggleButton" Source="Icons/rightArrow.png" MouseLeftButtonDown="ToggleButton_MouseLeftButtonDown" TouchUp="ToggleButton_TouchUp" MouseLeftButtonUp="ToggleButton_MouseLeftButtonUp" MouseMove="ToggleButton_MouseMove" />
+            </Border>
+            <StackPanel Margin="0,50,0,0">
+                <local:MetroButton Width="140" Height="80" Content="Home" FontSize="24" ButtonIcon="Icons/HomeIcon.png">
+                    <local:MetroButton.Background>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#004F0C" Offset="0.8" />
+                            <GradientStop Color="#009617" Offset="0.5" />
+                            <GradientStop Color="#017303" Offset="0.3" />
+                        </LinearGradientBrush>
+                    </local:MetroButton.Background>
+                </local:MetroButton>
+                <local:MetroButton Margin="0,30,0,0" Width="140" Height="80" Content="Logs" FontSize="24" ButtonIcon="Icons/LogsIcon.png">
+                    <local:MetroButton.Background>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#A86800" Offset="0.8" />
+                            <GradientStop Color="#E88F00" Offset="0.5" />
+                            <GradientStop Color="#B57000" Offset="0.3" />
+                        </LinearGradientBrush>
+                    </local:MetroButton.Background>
+                </local:MetroButton>
+                <local:MetroButton Margin="0,30,0,0" Width="140" Height="80" Content="Settings" FontSize="24" ButtonIcon="Icons/SettingsIcon.png">
+                    <local:MetroButton.Background>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#004FA3" Offset="0.8" />
+                            <GradientStop Color="#157EED" Offset="0.5" />
+                            <GradientStop Color="#0058B5" Offset="0.3" />
+                        </LinearGradientBrush>
+                    </local:MetroButton.Background>
+                </local:MetroButton>
+                <local:MetroButton Margin="0,30,0,0" Width="140" Height="80" Content="Power" FontSize="24" ButtonIcon="Icons/PowerIcon.png">
+                    <local:MetroButton.Background>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#A61717" Offset="0.8" />
+                            <GradientStop Color="#D93D3D" Offset="0.5" />
+                            <GradientStop Color="#C21919" Offset="0.3" />
+                        </LinearGradientBrush>
+                    </local:MetroButton.Background>
+                </local:MetroButton>
+            </StackPanel>
+        </Grid>
+        
+    </Border>
+</UserControl>
